@@ -1,6 +1,7 @@
 import  puppeteer from "puppeteer";
 import UserAgent from "user-agents";
 import { Base64 } from 'js-base64';
+import chrome from 'chrome-aws-lambda';
 
 export default async function handler(req, res) {
   const url =  req.query.url;
