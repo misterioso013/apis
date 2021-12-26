@@ -4,7 +4,15 @@ import { Base64 } from 'js-base64';
 
 export default async function handler(req, res) {
   const url =  req.query.url;
-  const browser = await puppeteer.launch();
+  const browser = await puppeteer.launch(
+    process.env.NODE_ENV === 'production'
+      ? {
+          args: chrome.args,
+          executablePath: await chrome.executablePath,
+          headless: chrome.headless,
+        }
+      : {}
+  );
   const page = await browser.newPage();
   await page.setUserAgent(UserAgent.toString())
    // await page.goto('https://www.udemy.com/course/guia-de-certificacoes-cloud-computing-2020/');
@@ -61,7 +69,8 @@ export default async function handler(req, res) {
   })
 
   //await page.screenshot({ path: 'example.png' });
-  
+  res.statusCode = 200
+  res.setHeader('Content-Type', 'application/json')
   res.status(200).json(
     {
       main,
