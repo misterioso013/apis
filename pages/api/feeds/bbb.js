@@ -43,7 +43,7 @@ export default async function bbb(req, res) {
       const url = data[i];
       const info = getInfo(url);
       info.then((res) => {
-        formart.push(res)
+        format.push(res)
       })
       
     }
