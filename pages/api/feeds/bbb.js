@@ -41,9 +41,10 @@ export default async function bbb(req, res) {
     let x = data.length <= 3? data.length: 3;
     for(i = 0; i < x; i++){
       const url = data[i];
-      const info = getInfo(url);
-      info.then((res) => {
-        format.push(res)
+      const info = await getInfo(url);
+      console.log(info);
+      format.push({
+        info
       })
       
     }
