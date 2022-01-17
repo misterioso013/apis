@@ -4,8 +4,8 @@ import chrome from 'chrome-aws-lambda';
 import getInfo from "../../../lib/getInfo";
 
 export default async function bbb(req, res) {
+    const url = req.query.url;
     
-    // Notícias do BBB
 
   const browser = await puppeteer.launch(
     process.env.NODE_ENV === 'production'
@@ -18,10 +18,7 @@ export default async function bbb(req, res) {
   );
   const page = await browser.newPage();
   await page.setUserAgent(UserAgent.toString())
-    await page.goto('https://www.google.com.br/alerts/feeds/12010470048634352932/2653147459434191372');
-
-  
-
+    await page.goto(url);
     const data = await page.evaluate( () => {
 
         let feed = []
@@ -35,21 +32,10 @@ export default async function bbb(req, res) {
       }
       return feed;
     })
+    await browser.close();
 
-    let format =  [];
-    let i = 0;
-    let x = data.length <= 3? data.length: 3;
-    for(i = 0; i < x; i++){
-      const url = data[i];
-      const info = await getInfo(url);
-      console.log(info);
-      format.push({
-        info
-      })
-      
-    }
     res.json(
-      format
+      data
     )
    
   
