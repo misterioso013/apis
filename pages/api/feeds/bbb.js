@@ -38,12 +38,14 @@ export default async function bbb(req, res) {
 
     let format =  [];
     let i = 0;
-    for(i = 0; i < data.length; i++){
+    let x = data.length <= 3? data.length: 3;
+    for(i = 0; i < x; i++){
       const url = data[i];
       const info = getInfo(url);
-      format.push({
-        info
+      info.then((res) => {
+        formart.push(res)
       })
+      
     }
     res.json(
       format
